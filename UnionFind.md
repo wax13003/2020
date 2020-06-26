@@ -15,8 +15,8 @@
 
 ### Generalization (Abstract Model) - Connectivity problem:
     Given a set of objects (abstracted to a list of integers 0, 1, 2, …, n-1, without loss of generality)  
-    You can connect two of them using `void union(int a, int b) ` 
-    You can query whether two of them are connected or not using `boolean find(int a, int b)`  
+    You can connect two of them using void union(int a, int b) 
+    You can query whether two of them are connected or not using boolean find(int a, int b)  
 
 ## Quick Union Find:
 ### <ins>**Key idea:**</ins>
