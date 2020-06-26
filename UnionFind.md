@@ -331,3 +331,118 @@ class WeightedUnionFind{
 
 }
 ```
+
+#### <ins>**Complexity:**</ins>
+    Assume maximum height of tree is O(logn)
+    union: O(logn)
+    find: O(logn)
+    space: O(n)
+
+Proof that height is O(log n):
+-> need to at least loosely prove and estimate it as O(logn)
+
+By induction
+Denote, h(n) is the height of a tree with n nodes;
+
+Hypothesis:
+h(n) <= log_2(n) + 1;
+
+initially:
+h(1) = 1 <= log_2(1) + 1 = 1;
+
+induction:
+Suppose h(m)<=log_2(m)+1, h(k)<=log_2(k)+1. Without loss of generality, also assume m >= k  
+Let's prove that h(m+k)<=log_2(m+k)+1(union two trees)
+
+log_2(k) + 1 = log_2(k) + log_2(2) = log_2(2k)
+h(m + k)
+<= max{h(m), h(k) + 1}
+ = max{log_2(m) + 1, log_2(k) + 2}
+ = max{log_2(2m), log_2(4k)}
+<= max{log_2(2m), log_2(2m + 2k)}
+ = log_2(m + k) + 1
+ 
+End of Proof.
+
+
+## Path Compression
+<pre>
+            1
+           /           1
+          2           / \
+         /           2   3
+        3                 \
+       /                   4
+      4
+      
+      find(3) 
+        
+          1
+         /            1
+        2           / | \
+       /           2  4  3
+      3                 
+     /                   
+    4 
+      find(4)    
+       
+</pre>
+### <ins>**Key idea:**</ins>
+    - In the int root(int a) function, always connect each node in the path from a to root directly
+
+```java
+interation:
+public int root(int x) {
+    int root = a;
+    while (ids[root] != root) {
+        root = ids[root]; 
+    }
+    while (a ! = root) {  
+        int t = ids[a];   
+        ids[a] = root;   
+        a = t;
+    }
+    return root;
+}
+
+recursion:
+public int root(int a) {
+    if (a != ids[a]) {
+       ids[a] = find(ids[a]);
+    }
+    return ids[a];
+}
+
+```
+
+	find(4)
+	              root
+                  /                 \         
+               parent[root]       
+              /
+           parent[parent[root]]
+         /
+      …..
+
+    parent = {0, 1, 1, 2, 3}  
+    find(4):4 != p[4], return p[4] (1)  
+        p[4] = find(3) = 1
+        find(3):3 != p[3], return 1
+            p[3] = find(2) = 1
+            find(2):2 != p[2], return 1
+                p[2] = find(1) = 1
+                find(1): 1 == p[1], return 1
+    parent = {0, 1, 1, 1, 1}
+    
+    parent[4] = 1
+    parent[3] = 1
+    parent[2] = 1
+    parent[1] = 1
+
+#### <ins>**Complexity:**</ins>
+    The tree is guaranteed to be very flat in this case!
+    
+    complexity is nearly
+    union: O(1)
+    find: O(1)
+    space: O(n)
