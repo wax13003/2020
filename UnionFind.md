@@ -249,3 +249,85 @@ class TreeUnionFind{
 #### Tree Union Find defect:
 * Trees can get tall
 * Find too expensive(could be N array accesses)
+
+## Weighted Union Find:
+
+ids = [1, 1, 1, 3, 5, 5]
+<pre>
+ 5           1
+  \         / \
+   6       2   3
+                \
+                 4
+</pre>
+
+union(1, 5)  
+ids[1, 1, 1, 3, **1**, 5]
+<pre>
+            1
+          / | \
+         5  2  3
+        /       \
+       6         4
+</pre>
+
+
+
+
+### <ins>**Key idea:**</ins>
+    - Modify tree union find to avoid tall trees
+    - Keep track of size of each tree(number of objects)
+    - Balance by linking root of smaller tree to root of larger tree
+    
+### Data Structure
+    Same as Tree Union Find, but maintain an extra array sizes[i] to count the number of objects in the tree rooted at i.
+
+### Find:
+    identical to tree union find
+    return root(a) == root(b)
+    
+### Union:
+    Link root of smaller tree to root of larger tree
+    update the sizes[] array
+    
+
+```java
+class WeightedUnionFind{
+    private int[] ids;
+    private int[] sizes;
+    public TreeUnionFind(int n) {
+        ids = new int[n];
+        sizes = new int[n];
+        for (int i = 0; i < n; i++) {
+            ids[i] = i;
+            sizes[i] = 1;
+        }
+    }
+    
+    public int root(int a) {
+        int root = a;
+        while (ids[root] != root) {
+            root = ids[root];
+        }
+        return root;
+    }
+    
+    public boolean find(int a, int b) {
+        return root(a) == root(b);
+    }
+    
+    public void union(int a, int b) {
+        int rootA = root(a);
+        int rootB = root(b);
+        if (sizes[rootA] >= sizes[rootB]) {
+            ids[rootB] = rootA;
+            sizes[rootA] += sizes[rootB];
+        } else {
+            ids[rootA] = rootB;
+            sizes[rootB] += sizes[rootA];
+        }
+        
+    }
+
+}
+```
