@@ -375,7 +375,7 @@ End of Proof.
        /                   4
       4
       
-      find(3) 
+      root(3) 
         
           1
          /            1
@@ -384,7 +384,7 @@ End of Proof.
       3                 
      /                   
     4 
-      find(4)    
+      root(4)    
        
 </pre>
 ### <ins>**Key idea:**</ins>
@@ -408,36 +408,36 @@ public int root(int x) {
 recursion:
 public int root(int a) {
     if (a != ids[a]) {
-       ids[a] = find(ids[a]);
+       ids[a] = root(ids[a]);
     }
     return ids[a];
 }
 
 ```
 
-	find(4)
+	root(4)
 	              root
                   /                 \         
-               parent[root]       
+               ids[root]       
               /
-           parent[parent[root]]
+           ids[ids[root]]
          /
       …..
 
-    parent = {0, 1, 1, 2, 3}  
-    find(4):4 != p[4], return p[4] (1)  
-        p[4] = find(3) = 1
-        find(3):3 != p[3], return 1
-            p[3] = find(2) = 1
-            find(2):2 != p[2], return 1
-                p[2] = find(1) = 1
-                find(1): 1 == p[1], return 1
-    parent = {0, 1, 1, 1, 1}
+    ids = {0, 1, 1, 2, 3}  
+    root(4):4 != ids[4], return ids[4] (1)  
+        ids[4] = root(3) = 1
+        root(3):3 != ids[3], return 1
+            ids[3] = root(2) = 1
+            root(2):2 != ids[2], return 1
+                ids[2] = root(1) = 1
+                root(1): 1 == ids[1], return 1
+    ids = {0, 1, 1, 1, 1}
     
-    parent[4] = 1
-    parent[3] = 1
-    parent[2] = 1
-    parent[1] = 1
+    ids[4] = 1
+    ids[3] = 1
+    ids[2] = 1
+    ids[1] = 1
 
 #### <ins>**Complexity:**</ins>
     The tree is guaranteed to be very flat in this case!
