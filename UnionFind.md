@@ -66,28 +66,27 @@ index0 = 2
 ```java
 
 class QuickUnionFind {
-	private int[] ids;
-	public QuickUnionFind(int n) {
-		ids = new int[n];
-		for (int i = 0; i < n; i++) {
-		    ids[i] = i;
-		}
+    private int[] ids;
+    public QuickUnionFind(int n) {
+	ids = new int[n];
+	for (int i = 0; i < n; i++) {
+	    ids[i] = i;
+	}
     }
 
     public void union(int a, int b) {
-	    //merge B to A
+	//merge B to A
         int idA = id[a];
         int idB = id[b];
-            for (int i = 0; i < id.length; i++) {
-                if (id[i] == idB) {
-                    id[i] = idA;
+	for (int i = 0; i < id.length; i++) {
+	    if (id[i] == idB) {
+	        id[i] = idA;
             }
-		}
 	}
-
-	public boolean find(int a, int b) {
-		return ids[a] == ids[b];
-	}
+    }
+    public boolean find(int a, int b) {
+        return ids[a] == ids[b];
+    }
 }
 
 ```
