@@ -8,9 +8,9 @@
 
     You have three computers A, B, C  
     At first, A B are not connected, B C are not connected, A C are not connected  
-    Then you connect **A, B**  
+    Then you connect A, B
     Now A B are connected, B C are not connected, A C are not connected  
-    Then you connect **B, C**  
+    Then you connect B, C  
     Now A B are connected, B C are connected, A C are also connected (although indirectly).  
 
 ### Generalization (Abstract Model) - Connectivity problem:
