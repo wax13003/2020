@@ -349,17 +349,17 @@ h(n) <= log_2(n) + 1;
 initially:
 h(1) = 1 <= log_2(1) + 1 = 1;
 
-induction:
-Suppose h(m)<=log_2(m)+1, h(k)<=log_2(k)+1. Without loss of generality, also assume m >= k  
-Let's prove that h(m+k)<=log_2(m+k)+1(union two trees)
+induction:  
+Suppose h(m)<=log_2(m)+1, h(k)<=log_2(k)+1. Without loss of generality, also assume m >= k    
+Let's prove that h(m+k)<=log_2(m+k)+1(union two trees)  
 
-log_2(k) + 1 = log_2(k) + log_2(2) = log_2(2k)
-h(m + k)
-<= max{h(m), h(k) + 1}
- = max{log_2(m) + 1, log_2(k) + 2}
- = max{log_2(2m), log_2(4k)}
-<= max{log_2(2m), log_2(2m + 2k)}
- = log_2(m + k) + 1
+log_2(k) + 1 = log_2(k) + log_2(2) = log_2(2k)  
+h(m + k)  
+<= max{h(m), h(k) + 1}  
+ = max{log_2(m) + 1, log_2(k) + 2}  
+ = max{log_2(2m), log_2(4k)}  
+<= max{log_2(2m), log_2(2m + 2k)}  
+ = log_2(m + k) + 1  
  
 End of Proof.
 
