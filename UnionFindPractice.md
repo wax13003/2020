@@ -1,5 +1,5 @@
-##Union Find Practice
-###Q1: 
+## Union Find Practice
+### Q1: 
 Implement a synonym system, can support operations:  
 associate(word1, word2) -- word1作为word2的同义词，同义词是双向的  
 isSynonym(word1, word2) -- 检查两个词是否同义词  
