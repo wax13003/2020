@@ -1,6 +1,5 @@
 # **Expression Tree**
-
-###Content
+### Content
 >* Convert prefix/postfix expression to infix expression (and reverse)
 >* Convert infix/postfix/prefix expression into the expression tree
 >* Evaluate infix/prefix/postfix expression using stacks
@@ -28,7 +27,7 @@ infix: ((3 + 4) * 5) - 6
 postfix: 3 4 + 5 * 6 -  -- Tip2: left to right scan   
 
 
-###Evaluate Postfix(i.e. Reverse Polish Notation, RPN)
+### Evaluate Postfix(i.e. Reverse Polish Notation, RPN)
 Evaluate the value of an arithmetic expression in Reverse Polish Notation.  
 Valid operators are +, -, *, /. Each operand may be an integer or another expression.
 
