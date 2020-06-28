@@ -391,7 +391,7 @@ End of Proof.
 
 ```java
 interation:
-public int root(int x) {
+public int root(int a) {
     int root = a;
     while (ids[root] != root) {
         root = ids[root]; 
