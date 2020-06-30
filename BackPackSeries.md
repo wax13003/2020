@@ -66,7 +66,7 @@ public int maxValue(int W, int[] items) {
 ```
 
 
-    **DP vs DFS + Memorization**
+    DP vs DFS + Memorization
     1. DP可能会用rolling array去优化空间
     2. DFS + Memorization可能会更容易从DFS brute force得到
     3. DFS + Memorization可能会启发DP
