@@ -93,12 +93,21 @@ public int maxValue(int W, int[] items) {
     int[] dp = new int[W + 1];
     for (int i = 1; i <= N; i++) {
         for (int w = W; w >= 0; w--) {
-            dp[w] = Math.max(dp[w - items[i - 1]] + items[i - 1], dp[w]);
+            if (w - items[i - 1] > 0) {
+               dp[w] = Math.max(dp[w - items[i - 1]] + items[i - 1], dp[w]);
+            }
         }
     }
     return dp[W];
 }
 ```
+如果题目问最多装多少个物品进背包?
+induction rule:   
+case 1 - 放item i	  	→ DP[i - 1][w - wi] + 1  
+case 2 - 不放item i	→ DP[i - 1][w]     
+				⇒ Max(case1, case2)   
+DP[i][w] = max(DP[i - 1][w], DP[i - 1][w - wi] + 1)  
+
 
 ## Series 2 - Max value with constraints
 Given n items with size Ai and value Vi, and a backpack with size m.
@@ -107,6 +116,58 @@ What's the maximum value can you put into the backpack?
 Input: 10, A=[2,3,5,7], V=[1,5,2,4]  
 Output: 9
 
+DFS:
+```java
+public void dfs(int[] A, int[] V, int id, int cur_size, int cur_V) {
+    if (cur_size < 0) return;
+    if (cur_size == 0 || id == A.length) {
+        g_max = Math.max(g_max, cur_V);
+        return;
+    }
+    
+    g_max = Math.max(g_max, cur_V);
+    
+    // put this item into backpack
+    dfs(A, V, id + 1, cur_size - A[id], cur_V + V[id]);  // -> dp[i - 1][j - A[i]] + V[i]
+    // don’t put it
+    dfs(A, V, id + 1, cur_size, cur_V);		     // -> dp[i - 1][j]
+}
+
+```
+DP:   
+之前的题目可以认为是这题的特例  
+vi = wi
+vi = 1
+
+DP[i][w]: means前i items所能组成的最大weight，并且小于w  
+
+Base case:   
+DP[0][w] for w = [0, W]
+
+induction rule:   
+case 1 - 放item i	  	→ DP[i - 1][w - wi] + vi  
+case 2 - 不放item i	→ DP[i - 1][w]     
+				⇒ Max(case1, case2)   
+DP[i][w] = max(DP[i - 1][w], DP[i - 1][w - wi] + vi)  
+  
+Result: 
+DP[N][W]  
+
+Time:  O(NW)  
+Space: O(NW)  
+
+## Series 3 - Max value with two (multiple) constraints
+Given n kind of items with size Ai and value Vi (each item has an infinite number available)
+and a backpack with size m.  
+What's the maximum value can you put into the backpack?
+
+Example 1:  
+Input:   
+m = 10,  
+A = [2,3,5,7],  
+V = [1,5,2,4]  
+
+Output: 15  
 
         
     
