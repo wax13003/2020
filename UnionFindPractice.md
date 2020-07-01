@@ -93,4 +93,140 @@ isSynonym: O(1)
 getAllSynonym: O(1)    
  
 Space: O(n)    
-n is the number of operations or the number of unique words in this system    
+n is the number of operations or the number of unique words in this system   
+
+### Q1: Number of Islands
+
+DFS:  
+if grid is not allowed to modify, use boolean[][] visited  
+```java
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == '1') {
+                    dfs(grid, i, j);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+    
+    private void dfs(char[][] grid, int i, int j) {
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0') return;
+        grid[i][j] = '0';
+        dfs(grid, i + 1, j);
+        dfs(grid, i - 1, j);
+        dfs(grid, i, j + 1);
+        dfs(grid, i, j - 1);
+    }
+```
+
+BFS: 
+```java
+    private final static int[][] dirs = {{-1,0},{1,0},{0,-1},{0,1}};
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) return 0;
+        int m = grid.length;
+        int n = grid[0].length;
+        int count = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    bfs(grid, i, j);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    private void bfs(char[][] grid, int x, int y){
+        grid[x][y] = '0';
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{x,y});
+        while(q.size()>0){
+            int size = q.size();
+            int[] cur = q.poll();
+            for(int i = 0; i < size; i++){
+                for(int[] dir: dirs){
+                    int x1 = cur[0] + dir[0];
+                    int y1 = cur[1] + dir[1];
+                    if(x1 >= 0 && y1 >= 0 && x1 < grid.length && y1 <grid[0].length && grid[x1][y1] == '1'){
+                        grid[x1][y1] = '0';
+                        q.offer(new int[]{x1, y1});
+                    }
+                }
+            }
+        }
+    }
+```
+
+Union Find:
+```java
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+        int m = grid.length, n = grid[0].length;
+        UnionFind uf = new UnionFind(m * n);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '0') continue;
+                uf.count++;
+                int id = i * n + j;
+                //left: j != 0, up: i != 0
+                if (j > 0 && grid[i][j -1] == '1') uf.union(id, id - 1);
+                if (i > 0 && grid[i - 1][j] == '1') uf.union(id, id - n);
+            }
+        }
+        return uf.count;
+        
+    }
+    
+    static class UnionFind {
+        private int[] ids;
+        private int[] sizes;
+        public int count;
+
+        public UnionFind(int n){
+            //check
+            ids = new int[n];
+            sizes = new int[n];
+            for (int i = 0; i < n; i++) {
+                ids[i] = i;
+                sizes[i] = 1;
+            }
+            count = 0;
+        }
+
+        public int root(int a) {
+            int id = a;
+            while (ids[id] != id) {
+                ids[id] = ids[ids[id]];//path compression
+                id = ids[id];
+            }
+            return id;
+        }
+
+        public boolean find(int a, int b) {
+            return root(a) == root(b);
+        }
+
+        public void union(int a, int b) {
+            int rootA = root(a);
+            int rootB = root(b);
+            if (rootA != rootB) count--;
+            else return;
+            if (sizes[rootA] >= sizes[rootB]) {
+                //merge rootB to rootA
+                ids[rootB] = rootA;
+                sizes[rootA] += sizes[rootB];
+            } else {
+                //merge rootA to rootB
+                ids[rootB] = rootA;
+                sizes[rootB]  += sizes[rootA];
+            }
+        }
+    }   
+``` 
