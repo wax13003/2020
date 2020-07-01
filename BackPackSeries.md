@@ -136,8 +136,8 @@ public void dfs(int[] A, int[] V, int id, int cur_size, int cur_V) {
 ```
 DP:   
 之前的题目可以认为是这题的特例  
-vi = wi
-vi = 1
+vi = wi  
+vi = 1  
 
 DP[i][w]: means前i items所能组成的最大weight，并且小于w  
 
@@ -155,6 +155,47 @@ DP[N][W]
 
 Time:  O(NW)  
 Space: O(NW)  
+
+如果问最多多少价值的物品能exactly装满背包？  
+区别是，constraint不一样，一个是最多，一个需要完全装满。
+如果要求完全装满，会出现一种情况，当前i个物品的情况下，无论怎么组合都不能等于w constraint   
+
+-> invalid case    
+DP[i][w] means前i个物品，装满w的背包，最多能放多少价值的物品。    
+
+Base case:    
+DP[i][0] = 0  
+DP[0][w] = -1 for w != 0 ->用一个特殊的值来表示invalid case  
+
+induction rule:  
+DP[i - 1][w - wi] 和 DP[i - 1][w] 不一定valid   
+case1：放item i，DP[i - 1][w - wi] + vi  
+case2：不放item i，DP[i - 1][w]   
+需要判断case1和case2是不是valid的case。只能在valid case中选取max  
+如果说两个case都是invalid，那么DP[i][w]也就是invalid的case，should be -1。因为当前状态不可能得到  
+
+
+有多少种方法能放满？
+Base case:    
+DP[i][0] = 1  
+DP[0][w] = 0 for w != 0
+
+induction rule:    
+case1：放item i，DP[i - 1][w - wi]  
+case2：不放item i，DP[i - 1][w]   
+DP[i][w] = DP[i - 1][w - wi] + DP[i - 1][w]  
+
+上面所有DP都可以通过rolling array进行空间优化  
+
+weight可能是负的，value不能为负。满足constraint的情况下，最多能放多少value？  
+把所有负的weight的物品找出来，相当于给原始背包扩容，并且把value之和加到结果之中。  
+
+weight可能是负的，value也可能为负的。满足constraint的情况下，最多能放多少value？  
+原始的DP解法能不能来解？？？ 不能 
+DP[i][w] means能不能
+背包容量：原始问题w的有效区间[0, W]    
+这一道题w的有效区间：[0, W+|所有负数weight之和|]  
+
 
 ## Series 3 - Max value with two (multiple) constraints
 Given n kind of items with size Ai and value Vi (each item has an infinite number available)
