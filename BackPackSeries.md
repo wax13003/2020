@@ -101,7 +101,7 @@ public int maxValue(int W, int[] weights) {
     return dp[W];
 }
 ```
-如果题目问最多装多少个物品进背包?
+如果题目问最多装多少个物品进背包?  
 induction rule:   
 case 1 - 放item i	  	→ DP[i - 1][w - wi] + 1  
 case 2 - 不放item i	→ DP[i - 1][w]     
@@ -191,10 +191,10 @@ weight可能是负的，value不能为负。满足constraint的情况下，最�
 把所有负的weight的物品找出来，相当于给原始背包扩容，并且把value之和加到结果之中。  
 
 weight可能是负的，value也可能为负的。满足constraint的情况下，最多能放多少value？  
-原始的DP解法能不能来解？？？ 不能 
-DP[i][w] means能不能
-背包容量：原始问题w的有效区间[0, W]    
-这一道题w的有效区间：[0, W+|所有负数weight之和|]  
+原始的DP解法能不能来解？？？ 不能   
+DP[i][w] means能不能    
+背包容量：原始问题w的有效区间[0, W]      
+这一道题w的有效区间：[0, W+|所有负数weight之和|]    
 
 
 ## Series 3 - Max value with two (multiple) constraints
