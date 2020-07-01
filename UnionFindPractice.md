@@ -95,7 +95,7 @@ getAllSynonym: O(1)
 Space: O(n)    
 n is the number of operations or the number of unique words in this system   
 
-### Q1: Number of Islands
+### Q2: Number of Islands
 
 DFS:  
 if grid is not allowed to modify, use boolean[][] visited  
