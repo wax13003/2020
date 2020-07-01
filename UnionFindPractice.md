@@ -147,7 +147,7 @@ BFS:
         grid[x][y] = '0';
         Queue<int[]> q = new LinkedList<>();
         q.offer(new int[]{x,y});
-        while(q.size()>0){
+        while(!q.isEmpty()){
             int size = q.size();
             int[] cur = q.poll();
             for(int i = 0; i < size; i++){
