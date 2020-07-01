@@ -47,17 +47,17 @@ Time:  O(NW)
 Space: O(NW)  
 
 ```java
-public int maxValue(int W, int[] items) {
-    if (items == null || items.length == 0 || W <= 0) {
+public int maxValue(int W, int[] weights) {
+    if (weights == null || weights.length == 0 || W <= 0) {
         return 0;
     }
-    int N = items.length; 
+    int N = weights.length; 
     int[][] dp = new int[N + 1][W + 1];
     for (int i = 1; i <= N; i++) {
         for (int w = 1; w <= W; w++) {
             dp[i][w] = dp[i - 1][w];
-            if (w - items[i - 1] > 0) {
-                dp[i][w] = Math.max(dp[i - 1][w - items[i - 1]] + items[i - 1], dp[i - 1][w]);
+            if (w - weights[i - 1] > 0) {
+                dp[i][w] = Math.max(dp[i - 1][w - weights[i - 1]] + weights[i - 1], dp[i - 1][w]);
             } 
         }
     }
@@ -85,16 +85,16 @@ public int maxValue(int W, int[] items) {
 </pre>
 
 ```java
-public int maxValue(int W, int[] items) {
-    if (items == null || items.length == 0 || W <= 0) {
+public int maxValue(int W, int[] weights) {
+    if (weights == null || weights.length == 0 || W <= 0) {
         return 0;
     }
-    int N = items.length; 
+    int N = weights.length; 
     int[] dp = new int[W + 1];
     for (int i = 1; i <= N; i++) {
         for (int w = W; w >= 0; w--) {
-            if (w - items[i - 1] > 0) {
-               dp[w] = Math.max(dp[w - items[i - 1]] + items[i - 1], dp[w]);
+            if (w - weights[i - 1] > 0) {
+               dp[w] = Math.max(dp[w - weights[i - 1]] + weights[i - 1], dp[w]);
             }
         }
     }
@@ -209,6 +209,82 @@ A = [2,3,5,7],
 V = [1,5,2,4]  
 
 Output: 15  
+
+两种方式：取或不取  
+和S2区别在于，去了的物品还可以再取  
+<pre>
+              第x层，第i个物品。DFS(i, w)
+        /不取                          \取这个物品
+    第x+1层，第i-1个物品 DFS(i-1,w）  第x+1层，第i个物品 DFS(i,w-wi) + vi
+    
+DFS(i,w):
+    if(i,w)已经计算过了：
+        return mem(i, w)
+    return max(DFS(i - 1, w), DFS(i, w - wi) + vi)
+</pre>
+
+DP[i][w]: means 前i个物品，容量为w, 最大的价值  
+DP[i][w] = max(DP[i - 1][w], DP[i][w - wi] + vi)   
+
+base case：  
+DP[0][w] = 0  
+
+induction rule：  
+case1：不取 DP[i - 1][w]  
+case2：取 DP[i][w - wi] + vi  
+
+```java
+public int maxValue(int[] weights, int[] vals, int W) {
+    //sanity check
+    if (weights == null || weights.length == 0 || W <= 0) {
+        return 0;
+    }
+    int N = weights.length; 
+    int[][] dp = new int[N + 1][W + 1];
+    for (int i = 0; i <= W; i++) {
+        dp[i][W] = -1;
+    }
+    dp[0][0] = 0;
+    for (int i = 1; i <= N; i++) {
+        for (int w = weights[i]; w <= W; w++) {
+            dp[i][w] = dp[i - 1][w];
+            if (dp[i][w - weights[i]] != -1) {
+                dp[i][w] = Math.max(dp[i][w], dp[i][w - weights[i]] + vals[i]);
+            } 
+        }
+    }
+    return dp[N][W];
+}
+```
+空间优化
+
+```java
+public int maxValue(int[] weights, int[] vals, int W) {
+    //sanity check
+    if (weights == null || weights.length == 0 || W <= 0) {
+        return 0;
+    }
+    int N = weights.length; 
+    int[]dp = new int[W + 1];
+    for (int i = 0; i <= W; i++) {
+        dp[i] = -1;
+    }
+    dp[0] = 0;
+    for (int i = 1; i <= N; i++) {
+        for (int w = weights[i]; w <= W; w++) {
+            if (dp[w - weights[i]] != -1) {
+                dp[w] = Math.max(dp[w], dp[w - weights[i]] + vals[i]);
+            } 
+        }
+    }
+    return dp[W];
+}
+```
+
+
+
+
+
 
         
     
